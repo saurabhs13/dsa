@@ -8,7 +8,7 @@ public class NoRepeatSubString{
         }
         int windowStart = 0;
         Map<Character,Integer> charIndexMap = new HashMap<>();
-        int windowLength = 0;
+        int windowLength;
         char strArr[] = str.toCharArray();
         int maxSubStringLength = 0;
         for(int windowEnd=0;windowEnd<strArr.length;windowEnd++){
