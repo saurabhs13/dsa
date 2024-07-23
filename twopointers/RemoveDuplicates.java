@@ -1,3 +1,8 @@
+/**
+ * Program to remove duplicates in place using 2 pointer and return length of final array.
+ * nextNonDuplicate represents the next slot where non-duplicate needs to be filled.
+ * 
+ */
 public class RemoveDuplicates{
     public static int removeDuplicates(int[] arr){
         int nextNonDuplicate = 1;
