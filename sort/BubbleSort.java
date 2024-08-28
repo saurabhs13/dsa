@@ -2,7 +2,7 @@
  * Program to demonstrate bubble sort algorithm.
  * In bubble sort every element is compared with its adjacent element and if the elemment at i+1 position is 
  * greater than element at i position then swap the elements.In this way after 1st pass the largest element will move
- * to the last position in the array.
+ * to the last position in the array and so on.
  * Time Complexity: O(n^2) for worst case.Best case can be improved to O(1) by adding a flag logic.
  */
 public class BubbleSort{
