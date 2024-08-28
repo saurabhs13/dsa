@@ -1,4 +1,9 @@
 
+/**
+ * Program to demonstrate selectionb sort.
+ * In brief the algorithm works by selecting the minimum element from the array and putting it at 1st position & so on.
+ * Time compleity for this algorithm is O(n^2) for worst, average and best case.
+ */
 public class SelectionSort{
 
     public static void sortArray(int[] arr){
