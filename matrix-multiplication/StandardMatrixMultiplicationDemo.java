@@ -3,10 +3,10 @@ public class StandardMatrixMultiplicationDemo{
     public static int[][] calculateDotProduct(int[][] a,int[][] b){
        int[][] c = new int[a.length][b[0].length];
        for(int i=0;i<a.length;i++){
-            for(int k=0;k<a.length;k++){
-                c[i][k] = 0;
-                for(int j=0;j<b.length;j++){
-                    c[i][k] += (a[i][j]*b[j][k]);
+            for(int j=0;j<b[0].length;j++){
+                c[i][j] = 0;
+                for(int k=0;k<a[0].length;k++){
+                    c[i][j] += (a[i][k]*b[k][j]);
                 }
             }
        }
