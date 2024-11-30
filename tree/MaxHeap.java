@@ -38,6 +38,13 @@ public class MaxHeap{
             return false;
         }
     }
+    /**
+     * Delete method always deletes the largest element i.e. root element 
+     * for a max heap.Post deletion the last element in the heap is moved to
+     * the root and then it is compared top-down with it's left & right child 
+     * until heap property is maintained again.
+     * Note: In insert the comparison is bottom-up but in delete it's top-down.
+     */
     public boolean delete(){
         if(lastElementIndex>=0){
             if(0==lastElementIndex){
