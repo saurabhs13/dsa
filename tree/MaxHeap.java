@@ -16,30 +16,60 @@ public class MaxHeap{
     public boolean insert(int element){
         if(lastElementIndex<arr.length-1){
             arr[++lastElementIndex] = element;
-            maxHeapify();
+            int childIndex = lastElementIndex;
+            /**
+             * Keep comparing with the parent node and if it's 
+             * greater than the parent node swap it with parent node
+             * to satisfy the max heap property.
+             */
+            while(childIndex>0){
+                int parentIndex  = getParentIndex(childIndex);
+                if(arr[parentIndex]<arr[childIndex]){
+                    swap(this.arr,parentIndex,childIndex);
+                    childIndex = parentIndex;
+                }else{
+                    break;
+                }
+               
+            }
             return true;
         }else{
             System.out.println("Heap is full, element can't be inserted");
             return false;
         }
     }
-    private void maxHeapify(){
-        int childIndex = lastElementIndex;
-        /**
-         * Keep comparing with the parent node and if it's 
-         * greater than the parent node swap it with parent node
-         * to satisfy the max heap property.
-         */
-        while(childIndex>0){
-            int parentIndex  = getParentIndex(childIndex);
-            if(arr[parentIndex]<arr[childIndex]){
-                swap(this.arr,parentIndex,childIndex);
-                childIndex = parentIndex;
-            }else{
-                break;
+    public boolean delete(){
+        if(lastElementIndex>=0){
+            if(0==lastElementIndex){
+                lastElementIndex--;
+                return true;
             }
-           
+            swap(this.arr,0,lastElementIndex);
+            lastElementIndex--;
+            int index = 0;
+            int largest = index;
+            while(index<lastElementIndex){
+                int leftChildIndex = 2*index +1;
+                int rightChildIndex = 2*index +2;
+                if(leftChildIndex<=lastElementIndex && arr[leftChildIndex]>arr[largest]){
+                    largest = leftChildIndex;
+                }
+                if(rightChildIndex<=lastElementIndex && arr[rightChildIndex]>arr[largest]){
+                    largest = rightChildIndex;
+                }
+                if(index !=largest){
+                    swap(this.arr,index,largest);
+                    index = largest;
+                }else{
+                    break;
+                }
+               
+            }
+
+        }else{
+            return false;
         }
+        return true;
     }
     private static void swap(int[]arr,int parentIndex,int childIndex){
         int temp = arr[parentIndex];
@@ -106,5 +136,7 @@ public class MaxHeap{
         int arr[] = {8,10,20,11,5,6,17,21,33,15,32};
         convertArrayToMaxHeap(arr, arr.length);
         printHeap(arr, arr.length-1);
+        maxHeap.delete();
+        printHeap(maxHeap.arr,maxHeap.lastElementIndex);
     }
 }
