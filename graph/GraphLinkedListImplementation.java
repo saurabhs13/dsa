@@ -1,4 +1,5 @@
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 
 public class GraphLinkedListImplementation{
     public List<Integer>[] adjacencyList;
@@ -15,6 +16,15 @@ public class GraphLinkedListImplementation{
         if (source < numberOfVertices && destination < numberOfVertices) {
             this.adjacencyList[source].addLast(destination);
         }
+    }
+    public GraphLinkedListImplementation getTranspose(){
+        GraphLinkedListImplementation g = new GraphLinkedListImplementation(this.numberOfVertices);
+        for(int i=0;i<numberOfVertices;i++){
+            for(int neighbor:this.adjacencyList[i]){
+                g.addEdge(neighbor, i);
+            }
+        }
+        return g;
     }
     public void printGraph(){
         for(int i=0;i<this.numberOfVertices;i++){
