@@ -1,10 +1,11 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 public class GraphRecursiveDFS{
 
     public static List<Integer> dfs(GraphLinkedListImplementation g){
         int vertices = g.numberOfVertices;
         boolean[] visited = new boolean[vertices];
-        List<Integer> result = new ArrayList<Integer>(vertices);
+        List<Integer> result = new ArrayList<>(vertices);
         for(int i=0;i<vertices;i++){
             if(!visited[i]){
                 System.out.println("Visit called for = "+i);
