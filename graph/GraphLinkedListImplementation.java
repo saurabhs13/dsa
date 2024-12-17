@@ -43,5 +43,7 @@ public class GraphLinkedListImplementation{
         g.addEdge(2,3);
         g.addEdge(1,4);
         g.printGraph();
+        GraphLinkedListImplementation gt = g.getTranspose();
+        gt.printGraph();
     }
 }
