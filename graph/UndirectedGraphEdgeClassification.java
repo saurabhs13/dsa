@@ -4,10 +4,16 @@ import java.util.Arrays;
 import java.util.List;
 
 public class UndirectedGraphEdgeClassification{
+    private static int tick = 0;
+    public static int timestamp(){
+        return ++tick;
+    }
     public static void dfs(GraphLinkedListImplementation g){
         int vertices = g.numberOfVertices;
         boolean[] visited = new boolean[vertices];
         int[] parent = new int[vertices];
+        int[] startTime = new int[vertices];
+        int[] finishTime = new int[vertices];
         List<Integer[]> treeEdge = new ArrayList<>();
         List<Integer[]> backEdge = new ArrayList<>();
         List<Integer> dfsResult = new ArrayList<>(vertices);
@@ -15,7 +21,7 @@ public class UndirectedGraphEdgeClassification{
         for(int i=0;i<vertices;i++){
             if(!visited[i]){
                 System.out.println("DFS Visit");
-                dfsVisit(g,i,visited,parent,treeEdge,backEdge,dfsResult);
+                dfsVisit(g,i,visited,parent,treeEdge,backEdge,dfsResult,startTime,finishTime);
                 System.err.println("");
             }
         }
@@ -36,22 +42,32 @@ public class UndirectedGraphEdgeClassification{
         for(Integer[] arr:backEdge){
             System.out.print("("+arr[0]+" , "+arr[1]+") ");
         }
+        System.out.println("");
+        System.out.println("Relative Start & Finish Times for nodes");
+        for(int i=0;i<vertices;i++){
+            System.out.println("Node = "+i+" Start time = "+startTime[i]+" & Finish Time = "+finishTime[i]);
+        }
+
     }
     public static void dfsVisit(GraphLinkedListImplementation g,int node,boolean[] visited,
-    int[] parent,List<Integer[]> treeEdge,List<Integer[]> backEdge,List<Integer> dfsResult){
+    int[] parent,List<Integer[]> treeEdge,List<Integer[]> backEdge,List<Integer> dfsResult,int[] startTime,int[] finishTime){
         visited[node] = true;
         dfsResult.add(node);
-        System.out.println("Exploration of node = "+node+" started");
+        startTime[node] = timestamp();
         for(int child:g.adjacencyList[node]){
             if(!visited[child]){
                 parent[child] = node;
                 treeEdge.add(new Integer[]{node,child});
-                dfsVisit(g, child, visited,parent,treeEdge,backEdge,dfsResult);
+                dfsVisit(g, child, visited,parent,treeEdge,backEdge,dfsResult,startTime,finishTime);
             }else if(child !=parent[node]){
+                /**
+                 * If there is even a single back edge in an undirected graph 
+                 * then it proves that it has a cycle.
+                 */
                 backEdge.add(new Integer[]{node,child});
             }
         }
-        System.out.println("Exploration of node = "+node+" finished");
+        finishTime[node] = timestamp();
     }
     public static void main(String[] args) {
         GraphLinkedListImplementation g = new GraphLinkedListImplementation(8);
