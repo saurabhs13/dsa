@@ -30,15 +30,16 @@ public class CustomLinkedList<T>{
         if(isEmpty())
             return;
         if(head.data ==data){
-            head = null;
+            head = head.next;
         }
         Node current = head,prev = null;
         while(current!=null){
-            if(current.data==data){
-
-            }
             prev = current;
             current = current.next;
+            if(current.data==data){
+                prev.next = current.next;
+                current = null;
+            }
         }
 
     }
