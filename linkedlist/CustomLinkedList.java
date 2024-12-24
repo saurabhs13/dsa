@@ -15,6 +15,9 @@ public class CustomLinkedList<T>{
             this.next = null;
         }
     }
+    public Node<T> getHead(){
+        return this.head;
+    }
     public void add(T data){
         Node node = new Node(data);
         if(isEmpty()){
@@ -55,6 +58,18 @@ public class CustomLinkedList<T>{
     }
     public int size(){
        return size;
+    }
+    public static void main(String[] args) {
+        CustomLinkedList<Integer> list = new CustomLinkedList<>();
+        for(int i=0;i<25;i++){
+            list.add(i);
+        }
+        list.remove(23);
+        CustomLinkedList.Node current = list.getHead();
+        while(current!=null){
+            System.out.print(current.data);
+            current = current.next;
+        }
     }
 
 }
