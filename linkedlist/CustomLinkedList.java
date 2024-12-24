@@ -6,9 +6,9 @@
 public class CustomLinkedList<T>{
     Node head;
     int size;
-    public class Node{
-        T data;
-        Node next;
+    public static class Node<T>{
+        public T data;
+        public Node next;
 
         public Node(T data){
             this.data = data;
