@@ -5,7 +5,8 @@
  **/
 public class CustomLinkedList<T>{
     Node head;
-    class Node{
+    int size;
+    public class Node{
         T data;
         Node next;
 
@@ -25,28 +26,35 @@ public class CustomLinkedList<T>{
             }
             current.next = node;
         }
+        size++;
     }
     public void remove(T data){
         if(isEmpty())
             return;
         if(head.data ==data){
             head = head.next;
+            size--;
+            return;
         }
         Node current = head,prev = null;
         while(current!=null){
+            if(current.data==data){
+                if(prev!=null){
+                    prev.next = current.next;
+                }
+                size--;
+                return;
+            }
             prev = current;
             current = current.next;
-            if(current.data==data){
-                prev.next = current.next;
-                current = null;
-            }
         }
 
     }
-
     public boolean isEmpty(){
-
         return null==head;
+    }
+    public int size(){
+       return size;
     }
 
 }
