@@ -13,7 +13,9 @@ public class DijkstraShortestPath{
         int[] dist = new int[vertices];
         Arrays.fill(dist,Integer.MAX_VALUE);
         dist[source] = 0;
+        //PQ used as a min heap
         PriorityQueue<int[]> minHeap = new PriorityQueue<>(Comparator.comparingInt(arr->arr[1])); 
+        TODO://Use a fibonaci heap for O(VlogV+E) time complexity, with min heap it's O((V+E)logV)
         minHeap.offer(new int[]{source,0});
         while(!minHeap.isEmpty()){
             int[] currentEntry = minHeap.poll();
