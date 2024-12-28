@@ -1,20 +1,36 @@
 import java.util.LinkedList;
 import java.util.List;
 
+class Edge{
+    int src;
+    int dest;
+    int weight;
+
+    public Edge(int src,int dest,int weight){
+        this.src = src;
+        this.dest = dest;
+        this.weight = weight;
+    }
+    public int getSrc(){
+        return this.src;
+    }
+    public int getDest(){
+        return this.dest;
+    }
+    public int getWeight(){
+        return this.weight;
+    }
+}
 public class WeightedGraph{
     private int numVertices;
     private List<Edge>[] adjacencyList;
 
-    static class Edge{
-        int src;
-        int dest;
-        int weight;
-
-        public Edge(int src,int dest,int weight){
-            this.src = src;
-            this.dest = dest;
-            this.weight = weight;
-        }
+    
+    public int getNumberOfVertices(){
+        return this.numVertices;
+    }
+    public List<Edge>[] getAdjacencyList(){
+        return this.adjacencyList;
     }
     public WeightedGraph(int numVertices){
         this.numVertices = numVertices;
