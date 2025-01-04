@@ -25,7 +25,28 @@ public class BinarySearchTree{
         }
         return rootNode;
     }
-    
+    public Node removeNode(Node rootNode, int data){
+        if(null == rootNode)
+            return null;
+        if(data>rootNode.data){
+            rootNode.right = removeNode(rootNode.right, data);
+        }else if(data<rootNode.data){
+            rootNode.left = removeNode(rootNode.left, data);
+        }else{
+            if(rootNode.left==null&&rootNode.right==null){
+                return null;
+            }else if(rootNode.left!=null && rootNode.right ==null){
+                return rootNode.left;
+            }else if(rootNode.right!=null&& rootNode.left ==null){
+                return rootNode.right;
+            }else{
+                Node minNode = findMin(rootNode.right);
+                rootNode.data = minNode.data;
+                rootNode.right = removeNode(rootNode.right, minNode.data);
+            }
+        }
+        return rootNode;
+    }
     public static int findHeight(Node rootNode){
         if(null == rootNode){
             return -1;
@@ -41,14 +62,14 @@ public class BinarySearchTree{
         }
         return rootNode.data;
     }
-    public static int findMin(Node rootNode){
+    public static Node findMin(Node rootNode){
         if(rootNode == null){
-            return -1;
+            return null;
         }
         while(rootNode.left != null){
             rootNode = rootNode.left;
         }
-        return rootNode.data;
+        return rootNode;
     }
     public static void  preOrderTraversal(Node rootNode){
         if(null == rootNode){
@@ -169,6 +190,7 @@ public class BinarySearchTree{
         bstToGst(rootNode.left);
       
     } */
+    
     public static void main(String[] args){
         BinarySearchTree bst = new BinarySearchTree();
         bst.rootNode = bst.addNode(bst.rootNode,15);
@@ -199,5 +221,22 @@ public class BinarySearchTree{
         System.out.println(isBinarySearchTreeEfficient(bst.rootNode));
         System.out.println("\n Post-order Traversal");
         reverseInOrderTraversal(bst.rootNode);
-    }
+
+        BinarySearchTree bst1 = new BinarySearchTree();
+        bst1.rootNode = bst1.addNode(bst.rootNode,20);
+        bst1.rootNode = bst1.addNode(bst.rootNode,18);
+        bst1.rootNode = bst1.addNode(bst.rootNode,22);
+        bst1.rootNode = bst1.addNode(bst.rootNode,16);
+        bst1.rootNode = bst1.addNode(bst.rootNode,15);
+        bst1.rootNode = bst1.addNode(bst.rootNode,17);
+        bst1.rootNode = bst1.addNode(bst.rootNode,19);
+        bst1.rootNode = bst1.addNode(bst.rootNode,21);
+        bst1.rootNode = bst1.addNode(bst.rootNode,24);
+        bst1.rootNode = bst1.addNode(bst.rootNode,25);
+        System.out.println("\n In-order Traversal");
+        inOrderTraversal(bst1.rootNode);
+        bst1.removeNode(bst1.rootNode,24);
+        System.out.println("\n In-order Traversal");
+        inOrderTraversal(bst1.rootNode);
+    }   
 }
