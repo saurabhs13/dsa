@@ -125,7 +125,7 @@ public class RedBlackTree{
                 }else{
                     //case when uncle is black or null (as null is also black)
 
-                    if(node == parent.right){
+                    if(node == parent.left){
                         //parent is  grandparent.left --> parent and parent.right --> node
                             node = parent;
                             rightRotate(node);
