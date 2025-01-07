@@ -88,7 +88,9 @@ public class RedBlackTree{
             Node parent = node.parent;
             Node grandParent = parent.parent;
 
-         
+            if(null == grandParent){
+                break;
+            }
             if(parent == grandParent.left){
                 //case when parent is the left child of grandparent
                 Node uncle = grandParent.right;
@@ -147,7 +149,7 @@ public class RedBlackTree{
         while(!queue.isEmpty()){
             Node node = queue.poll();
             if(node.parent!=null){
-                System.out.println("Node Data = "+ node.data+" Parent Data= "+node.parent.data+" Node Red = "+node.isRed+" Parent Red = "+node.parent.isRed);
+                System.out.println("Node Data = "+ node.data+" Node Red = "+node.isRed+" Parent Data= "+node.parent.data+"Parent Red = "+node.parent.isRed);
             }else{
                 System.out.println("Node Data = "+ node.data+" Node Red = "+node.isRed);
             }
@@ -167,16 +169,11 @@ public class RedBlackTree{
     public static void main(String[] args){
 
         RedBlackTree rbTree = new RedBlackTree();
+        rbTree.insert(40);
         rbTree.insert(20);
-        rbTree.insert(18);
-        rbTree.insert(22);
-        rbTree.insert(16);
-        rbTree.insert(15);
-        rbTree.insert(17);
-        rbTree.insert(19);
-        rbTree.insert(21);
-        rbTree.insert(24);
-        rbTree.insert(25);
+        rbTree.insert(60);
+        rbTree.insert(30);
+        
         printRBTree(rbTree.root);
     }
 }
