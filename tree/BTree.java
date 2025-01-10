@@ -168,7 +168,38 @@ public class BTree{
             System.out.println();
         }
         
+        
     }
+    
+    public boolean search(int key) {
+        return root == null ? false : search(root, key);
+    }
+
+
+    private boolean search(Node node, int key) {
+        
+        int i = 0;
+
+       //Find the slot in current node where key might exist based on monotonical order
+        while (i < node.n && key > node.keys[i]) {
+            i++;
+        }
+
+        //Check if key exists at the slot, if yes return true
+        if (i < node.n && key == node.keys[i]) {
+            return true;
+        }
+
+       //If does not exist and it's a leaf node return false as key is not present in BTree
+        if (node.isLeaf) {
+            return false;
+        }
+
+        //If it's a non-leaf node, then recurse into children
+        return search(node.children[i], key);
+    }
+
+
     public static void main(String[] args){
 
         BTree btree = new BTree(2);
@@ -189,6 +220,7 @@ public class BTree{
         btree.insert(90);
         btree.insert(100);
         printBTree(btree.root);
+        System.out.println("Key 55 exists ? "+btree.search(55));
     }
 
 }
