@@ -23,11 +23,14 @@ public class Trie{
         root = new TrieNode();
     }
 
+    private int getIndex(char c){
+        return c-'a';
+    }
     public void insert(String s){
         char[] sArr = s.toCharArray();
         TrieNode current = root;
         for(int i=0;i<sArr.length;i++){
-            int childIndex = sArr[i] - 'a';
+            int childIndex = getIndex(sArr[i]);
             if(current.children[childIndex] == null){
                 current.children[childIndex] = new TrieNode();
             }
@@ -39,7 +42,7 @@ public class Trie{
         char[] sArr = s.toCharArray();
         TrieNode current = root;
         for(int i=0;i<sArr.length;i++){
-            int childIndex = sArr[i] - 'a';
+            int childIndex = getIndex(sArr[i]);
             if(current.children[childIndex] == null){
                 return false;
             }
@@ -62,7 +65,7 @@ public class Trie{
 
         }
 
-        int childIndex = s.charAt(index) - 'a';
+        int childIndex = getIndex(s.charAt(index));
         TrieNode child = node.children[childIndex];
 
         if(null == child){
@@ -121,12 +124,33 @@ public class Trie{
             }
         }
     }
+    private long countWordsWithPrefix(String prefix){
+        long count = 0;
+        if(null==prefix || prefix.isEmpty())
+            return count;
+        char[] charArr = prefix.toCharArray();
+        TrieNode current = root;
+        for(int i=0;i<charArr.length;i++){
+            int childIndex = getIndex(charArr[i]);
+            if(current.children[childIndex]!=null){
+                current = current.children[childIndex];
+            }else{
+                return count;
+            }
+        }
+        count = countWords(current);
+        return count;
+    }
     public static void main(String[] args) {
         Trie trie = new Trie();
         trie.insert("apple");
         trie.insert("there");
         trie.insert("their");
         trie.insert("the");
+        trie.insert("they");
+        trie.insert("them");
+        trie.insert("application");
+        trie.insert("zoo");
         System.out.println("Sam exists: "+trie.search("sam"));
         System.out.println("Apple exists: "+trie.search("apple"));
         System.out.println("the exists: "+trie.search("the"));
@@ -137,5 +161,8 @@ public class Trie{
         System.out.println("Word Count: "+trie.countWords());
         System.out.println("Word Count: "+trie.getAllWords().size());
         System.out.println("1st Word: "+trie.getAllWords().getFirst());
+        System.out.println("Words with prefix the: "+trie.countWordsWithPrefix("the"));
+        System.out.println("Words with prefix app: "+trie.countWordsWithPrefix("app"));
+        System.out.println("Words with prefix app: "+trie.countWordsWithPrefix("lot"));
     }
 }
