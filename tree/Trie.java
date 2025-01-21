@@ -1,4 +1,6 @@
 
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Program to implement Trie data structure.
@@ -84,6 +86,41 @@ public class Trie{
         }
         return false;
     }
+    public long countWords(){
+        return countWords(root);
+    }
+    private long countWords(TrieNode node){
+        long result = 0;
+        if(node.endOfWord){
+            result++;
+        }
+        for(int i=0;i<26;i++){
+            if(node.children[i]!=null){
+               result+= countWords(node.children[i]);
+            }
+        }
+        return result;
+    }
+    public List<String> getAllWords(){
+
+        List<String> words = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        getAllWords(root,words,sb);
+        return words;
+    }
+    private void getAllWords(TrieNode node,List<String> words,StringBuilder sb){
+        if(node.endOfWord){
+            words.add(sb.toString());
+        }
+
+        for(int i=0;i<26;i++){
+            if(node.children[i]!=null){
+                sb.append((char)(i+'a'));
+                getAllWords(node.children[i],words,sb);
+                sb.deleteCharAt(sb.length()-1);
+            }
+        }
+    }
     public static void main(String[] args) {
         Trie trie = new Trie();
         trie.insert("apple");
@@ -97,5 +134,8 @@ public class Trie{
         System.out.println("the exists: "+trie.search("the"));
         System.out.println("their exists: "+trie.search("their"));
         System.out.println("there exists: "+trie.search("there"));
+        System.out.println("Word Count: "+trie.countWords());
+        System.out.println("Word Count: "+trie.getAllWords().size());
+        System.out.println("1st Word: "+trie.getAllWords().getFirst());
     }
 }
