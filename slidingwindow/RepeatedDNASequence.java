@@ -3,12 +3,37 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 class RepeatedDNASequence {
+
+    public static List<String> bruteForceFindRepeatedDnaSequences(String s) {
+
+        Set<String> result = new HashSet<>();
+        int k = 10;
+        if(null ==s || s.length()<10){
+            return new ArrayList<>();
+        }
+        for(int i=0;i<s.length()-9;i++){
+            String subStr = s.substring(i,i+10);
+            if(result.contains(subStr)){
+                continue;
+            }
+            for(int j=i+1;j<s.length()-k-1;j++){
+                String subStr2 = s.substring(j,j+k);
+                if(subStr.equals(subStr2)){
+                    result.add(subStr);
+                    break;
+                }
+            }
+        }
+        return new ArrayList<>(result);
+    }
+
+    
     public static List<String> findRepeatedDnaSequences(String s) {
         Set<String> result = new HashSet<>();
         Set<Integer> seenHashes = new HashSet<>();
-        Set<Integer> addedToResult = new HashSet<>();
         if(null ==s || s.length()<10){
             return new ArrayList<>();
         }
@@ -41,7 +66,6 @@ class RepeatedDNASequence {
           
             if (seenHashes.contains(hash)) {
                 result.add(s.substring(j, j + k));
-                addedToResult.add(hash);
             } else {
                 seenHashes.add(hash);
             }
@@ -49,11 +73,24 @@ class RepeatedDNASequence {
       
         return new ArrayList<>(result);
     }
-
-    public static void main(String[] args) {
-        String s = "AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT";          
-        for(String s1:findRepeatedDnaSequences(s)){
-            System.out.println(s1);
+     public static String generateLargeDNAString(int length) {
+        char[] chars = {'A', 'C', 'G', 'T'};
+        StringBuilder sb = new StringBuilder(length);
+        Random rand = new Random();
+        for (int i = 0; i < length; i++) {
+            sb.append(chars[rand.nextInt(4)]);
         }
+        return sb.toString();
+    }
+    public static void main(String[] args) {
+        String s = generateLargeDNAString(10000);    
+        long startTime = System.currentTimeMillis();      
+        findRepeatedDnaSequences(s);
+        long endTime = System.currentTimeMillis();  
+        System.out.println("Time taken for Rabin Karp: " + (endTime - startTime) + "ms");
+        startTime = System.currentTimeMillis();     
+        bruteForceFindRepeatedDnaSequences(s);
+        endTime = System.currentTimeMillis();
+        System.out.println("Time taken for brute force: " + (endTime - startTime) + "ms");
     }   
 }
