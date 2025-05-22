@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.BitSet;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -34,6 +36,7 @@ class RepeatedDNASequence {
     public static List<String> findRepeatedDnaSequences(String s) {
         Set<String> result = new HashSet<>();
         Set<Integer> seenHashes = new HashSet<>();
+        Set<Integer> addedToResult = new HashSet<>();
         if(null ==s || s.length()<10){
             return new ArrayList<>();
         }
@@ -54,7 +57,7 @@ class RepeatedDNASequence {
             hash = (hash*base + charToInt.get(sArr[i]))%mod;
         }
         seenHashes.add(hash);
-       
+        
             // Sliding window
         for(int j = 1; j <= sArr.length - k; j++) {
             // Update hash: remove the outgoing character and add the incoming character
@@ -64,14 +67,88 @@ class RepeatedDNASequence {
                 hash = (hash+mod)%mod;
             }
           
-            if (seenHashes.contains(hash)) {
+            if (seenHashes.contains(hash) && !addedToResult.contains(hash)) {
                 result.add(s.substring(j, j + k));
+                addedToResult.add(hash);
             } else {
                 seenHashes.add(hash);
             }
         }
       
         return new ArrayList<>(result);
+    }
+    public static List<String> bitwiseFindRepeatedDnaSequences(String s) {
+        if (s == null || s.length() < 10) {
+            return Collections.emptyList();
+        }
+
+        Map<Character, Integer> charToBits = Map.of(
+                'A', 0,
+                'C', 1,
+                'G', 2,
+                'T', 3
+        );
+
+        int k = 10;
+        int hash = 0;
+        int mask = (1 << (2 * k)) - 1;  // To retain only 20 bits
+
+        Set<Integer> seen = new HashSet<>();
+        Set<String> result = new HashSet<>();
+
+        for (int i = 0; i < s.length(); i++) {
+            // Add new character's bits
+            hash = ((hash << 2) | charToBits.get(s.charAt(i))) & mask;
+
+            // Start checking only when we have the first 10-letter substring
+            if (i >= k - 1) {
+                if (seen.contains(hash)) {
+                    result.add(s.substring(i - k + 1, i + 1));
+                } else {
+                    seen.add(hash);
+                }
+            }
+        }
+
+        return new ArrayList<>(result);
+    }
+    public static List<String> fasterBitwiseFindRepeatedDnaSequences(String s){
+        int k = 10;
+        int n = s.length();
+        if (n < k) return Collections.emptyList();
+
+        // Mapping DNA chars to 2-bit representations
+        int[] charToBits = new int[26]; // 'A' to 'Z'
+        charToBits['A' - 'A'] = 0; // 00
+        charToBits['C' - 'A'] = 1; // 01
+        charToBits['G' - 'A'] = 2; // 10
+        charToBits['T' - 'A'] = 3; // 11
+
+        int hash = 0;
+        int mask = (1 << (2 * k)) - 1; // 20-bit mask: 0xFFFFF
+
+        // Use bitsets for performance: 1M size is enough (4^10 = 1,048,576)
+        BitSet seen = new BitSet(1 << 20);
+        BitSet added = new BitSet(1 << 20);
+
+        List<String> result = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            hash = ((hash << 2) | charToBits[s.charAt(i) - 'A']) & mask;
+
+            if (i >= k - 1) {
+                if (seen.get(hash)) {
+                    if (!added.get(hash)) {
+                        result.add(s.substring(i - k + 1, i + 1));
+                        added.set(hash);
+                    }
+                } else {
+                    seen.set(hash);
+                }
+            }
+        }
+
+        return result;
     }
      public static String generateLargeDNAString(int length) {
         char[] chars = {'A', 'C', 'G', 'T'};
@@ -83,14 +160,22 @@ class RepeatedDNASequence {
         return sb.toString();
     }
     public static void main(String[] args) {
-        String s = generateLargeDNAString(10000);    
+        String s = generateLargeDNAString(100_000);    
         long startTime = System.currentTimeMillis();      
         findRepeatedDnaSequences(s);
         long endTime = System.currentTimeMillis();  
         System.out.println("Time taken for Rabin Karp: " + (endTime - startTime) + "ms");
-        startTime = System.currentTimeMillis();     
+      /**  startTime = System.currentTimeMillis();     
         bruteForceFindRepeatedDnaSequences(s);
         endTime = System.currentTimeMillis();
-        System.out.println("Time taken for brute force: " + (endTime - startTime) + "ms");
+        System.out.println("Time taken for brute force: " + (endTime - startTime) + "ms");*/ 
+        startTime = System.currentTimeMillis();     
+        bitwiseFindRepeatedDnaSequences(s);
+        endTime = System.currentTimeMillis();
+        System.out.println("Time taken for bitwise repeated dna seq: " + (endTime - startTime) + "ms");
+        startTime = System.currentTimeMillis();     
+        fasterBitwiseFindRepeatedDnaSequences(s);
+        endTime = System.currentTimeMillis();
+        System.out.println("Time taken for faster bitwise repeated dna seq: " + (endTime - startTime) + "ms");
     }   
 }
