@@ -117,7 +117,15 @@ class RepeatedDNASequence {
         int n = s.length();
         if (n < k) return Collections.emptyList();
 
-        // Mapping DNA chars to 2-bit representations
+        /**
+         * Here we have used an array of size 26 instead of a hashmap.
+         * This saves CPU with hashing and has lower memory footprint
+         * as no objects, collections are involved.
+         * This also has a deterministic way to find number for any char
+         * because it stores them as 'char' - 'A' so it's 0 for A, 1 for B n so on
+         * hence it has codified the logic to retrieve from this array without
+         * iterating the
+         */
         int[] charToBits = new int[26]; // 'A' to 'Z'
         charToBits['A' - 'A'] = 0; // 00
         charToBits['C' - 'A'] = 1; // 01
@@ -127,6 +135,7 @@ class RepeatedDNASequence {
         int hash = 0;
         int mask = (1 << (2 * k)) - 1; // 20-bit mask: 0xFFFFF
 
+        System.out.println("mask: " + mask);
         // Use bitsets for performance: 1M size is enough (4^10 = 1,048,576)
         BitSet seen = new BitSet(1 << 20);
         BitSet added = new BitSet(1 << 20);
@@ -161,21 +170,22 @@ class RepeatedDNASequence {
     }
     public static void main(String[] args) {
         String s = generateLargeDNAString(100_000);    
-        long startTime = System.currentTimeMillis();      
+        /**long startTime = System.currentTimeMillis();      
         findRepeatedDnaSequences(s);
         long endTime = System.currentTimeMillis();  
-        System.out.println("Time taken for Rabin Karp: " + (endTime - startTime) + "ms");
+        System.out.println("Time taken for Rabin Karp: " + (endTime - startTime) + "ms"); */
       /**  startTime = System.currentTimeMillis();     
         bruteForceFindRepeatedDnaSequences(s);
         endTime = System.currentTimeMillis();
         System.out.println("Time taken for brute force: " + (endTime - startTime) + "ms");*/ 
-        startTime = System.currentTimeMillis();     
+     /**   startTime = System.currentTimeMillis();     
         bitwiseFindRepeatedDnaSequences(s);
         endTime = System.currentTimeMillis();
         System.out.println("Time taken for bitwise repeated dna seq: " + (endTime - startTime) + "ms");
-        startTime = System.currentTimeMillis();     
+         */
+        long startTime = System.currentTimeMillis();     
         fasterBitwiseFindRepeatedDnaSequences(s);
-        endTime = System.currentTimeMillis();
+        long endTime = System.currentTimeMillis();
         System.out.println("Time taken for faster bitwise repeated dna seq: " + (endTime - startTime) + "ms");
     }   
 }

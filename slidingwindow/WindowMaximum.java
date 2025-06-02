@@ -31,27 +31,21 @@ public class WindowMaximum{
             return new int[0];
         int[] result = new int[n-w+1];
         Deque<Integer> currentWindow = new ArrayDeque<>();
-        for(int i=0;i<w;i++){
-            cleanup(nums,i,currentWindow);
-            currentWindow.add(i);
-        }
-        result[0] = nums[currentWindow.getFirst()];
-
-        for(int i=w;i<n;i++){
-            cleanup(nums, i, currentWindow);
-            if(!currentWindow.isEmpty()&&currentWindow.getFirst()<=i-w)
-                currentWindow.removeFirst();
-            currentWindow.add(i);
-            result[i-w+1] = nums[currentWindow.getFirst()];
+        for(int i=0;i<n;i++){
+            while(!currentWindow.isEmpty()&&nums[currentWindow.peekLast()]<nums[i]){
+                currentWindow.pollLast();
+            }
+            currentWindow.offerLast(i);
+            while(!currentWindow.isEmpty()&&currentWindow.peekFirst()<i-w+1){
+                currentWindow.pollFirst();
+            }
+            if(i-w+1>=0){
+                result[i-w+1] = nums[currentWindow.peekFirst()]; 
+            }
         }
         return result;
     } 
     
-    public static void cleanup(int[] nums, int i,Deque<Integer> currentWindow){
-        while (!currentWindow.isEmpty() && nums[i] >= nums[currentWindow.getLast()]) {
-			currentWindow.removeLast();
-		}
-    }
     public static void main(String[] args){
         int[] arr = {2,4,3,6,5,4,1,10};
         int k = 3;
