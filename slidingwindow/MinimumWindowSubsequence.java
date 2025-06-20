@@ -38,13 +38,16 @@ public class MinimumWindowSubsequence {
                     }else{
                         result = s.substring(ws,we+1);
                     } 
+                    i = ws;
+                }else{
+                    break;
                 }
             }
         }
         return result;
     }
     public static void main(String[] args) {
-        String s = "abcdebdde";
+        String s = "abcabcbcbcadebdbebe";
         String t = "bde";
         System.out.println("Minimum window: " + findMinWindow(s, t));
     }

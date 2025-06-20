@@ -28,7 +28,10 @@ public class LongestRepeatingCharacterReplacement {
         return maxLen;
     }
     /**
-     * Optimized solution
+     * Optimized solution using sliding window.
+     * Approach is to track the most freq. character in the window and
+     * shrink the window when windoiw size-max count>k as that many characters
+     * have to be replaced.
      * @param s
      * @param k
      * @return
